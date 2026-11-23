@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Економіка, населення. Друга половина ХІХ ст.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,800&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9eef3; --bg2:#dfe6ee; --surface:#ffffff; --ink:#1b2530; --muted:#5b6977; --line:#cfd8e2;
+  --dnipro:#b37400; --dnipro-bg:#fff1d2; --dnipro-ink:#5a3a00;
+  --zahid:#2b7a4f; --zahid-bg:#dcf2e4; --zahid-ink:#123d26;
+  --spilne:#4459a0; --spilne-bg:#e2e8fa; --spilne-ink:#1c2a57;
+  --ok:#23894f; --bad:#d23b2c; --accent:#1d5fd1;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121820; --bg2:#18202a; --surface:#1e2733; --ink:#e8edf3; --muted:#9dabba; --line:#313d4b;
+    --dnipro:#f0b54a; --dnipro-bg:#33280f; --dnipro-ink:#ffe2a6;
+    --zahid:#6fd09a; --zahid-bg:#142d20; --zahid-ink:#c4f2d6;
+    --spilne:#9bb0f0; --spilne-bg:#1d2540; --spilne-ink:#d5ddff;
+    --ok:#5fd48e; --bad:#ff7b6c; --accent:#7aaeff;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121820; --bg2:#18202a; --surface:#1e2733; --ink:#e8edf3; --muted:#9dabba; --line:#313d4b;
+  --dnipro:#f0b54a; --dnipro-bg:#33280f; --dnipro-ink:#ffe2a6;
+  --zahid:#6fd09a; --zahid-bg:#142d20; --zahid-ink:#c4f2d6;
+  --spilne:#9bb0f0; --spilne-bg:#1d2540; --spilne-ink:#d5ddff;
+  --ok:#5fd48e; --bad:#ff7b6c; --accent:#7aaeff;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(ellipse at top,var(--bg2),var(--bg) 70%);background-color:var(--bg);color:var(--ink);font-family:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+.app{max-width:980px;margin:0 auto;padding:20px 16px 40px;min-height:100%;display:flex;flex-direction:column}
+@media (min-width:1280px){.app{max-width:1160px;padding-top:32px}}
+@media (max-width:420px){.app{padding:14px 10px 28px}}
+.screen{display:none;flex-direction:column;flex:1}
+.screen.active{display:flex}
+h1{font-family:"Literata",Georgia,serif;font-weight:800;line-height:1.1;margin:0}
+
+/* Start */
+.start{justify-content:center;align-items:center;text-align:center;gap:22px;padding:24px 0}
+.start h1{font-size:clamp(1.9rem,5vw,3rem);max-width:16ch}
+.start .era{font-family:"Literata",Georgia,serif;font-size:clamp(1rem,2.4vw,1.3rem);color:var(--muted);margin-top:-8px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{padding:8px 14px;border-radius:999px;font-weight:600;font-size:.95rem}
+.chip.dnipro{background:var(--dnipro-bg);color:var(--dnipro-ink);border:2px solid var(--dnipro)}
+.chip.zahid{background:var(--zahid-bg);color:var(--zahid-ink);border:2px solid var(--zahid)}
+.chip.spilne{background:var(--spilne-bg);color:var(--spilne-ink);border:2px solid var(--spilne)}
+.start p{max-width:52ch;color:var(--muted);margin:0}
+.modes{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{font:inherit;font-weight:700;font-size:1.05rem;border-radius:14px;padding:14px 26px;border:2px solid var(--ink);background:var(--ink);color:var(--surface);cursor:pointer;transition:transform .1s}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.btn small{display:block;font-weight:500;font-size:.8rem;opacity:.75}
+
+/* Game */
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+@media (max-width:480px){.topbar{flex-wrap:wrap;gap:8px 12px}.topbar .progress{order:5;flex-basis:100%}}
+.progress{flex:1;height:12px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress div{height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .3s}
+.stat{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat .lbl{color:var(--muted);font-weight:500;font-size:.85rem;margin-right:4px}
+.streak{color:var(--dnipro)}
+.icon-btn{font:inherit;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:1.3rem;padding:4px 6px;border-radius:8px}
+.icon-btn:focus-visible{outline:3px solid var(--accent)}
+
+.stage{flex:1;display:flex;align-items:center;justify-content:center;padding:14px 0 22px;min-height:220px}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:28px 26px;max-width:560px;width:100%;text-align:center;font-size:clamp(1.15rem,2.8vw,1.5rem);font-weight:600;line-height:1.35;box-shadow:0 10px 30px -12px rgba(20,40,70,.35);cursor:grab;touch-action:none;user-select:none;position:relative;transition:border-color .15s}
+.card .num{position:absolute;top:10px;left:14px;font-size:.8rem;font-weight:500;color:var(--muted)}
+.card.enter{animation:enter .28s ease-out}
+.card.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--surface))}
+.card.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface));animation:shake .4s}
+.card.dragging{cursor:grabbing;box-shadow:0 20px 40px -10px rgba(20,40,70,.45);transition:none;z-index:10}
+@keyframes enter{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{translate:0}20%{translate:-10px}40%{translate:9px}60%{translate:-6px}80%{translate:4px}}
+
+.feedback{min-height:2.2em;text-align:center;font-weight:600;margin-bottom:10px}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+
+.bins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.bin{font:inherit;border-radius:18px;padding:18px 12px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:3px solid transparent;transition:transform .12s,border-color .12s,box-shadow .12s}
+.bin .name{font-family:"Literata",Georgia,serif;font-weight:800;font-size:clamp(1rem,2.4vw,1.25rem);line-height:1.15}
+.bin .key{font-size:.78rem;opacity:.7}
+.bin .count{font-size:.85rem;font-weight:600;opacity:.85;font-variant-numeric:tabular-nums}
+.bin.dnipro{background:var(--dnipro-bg);color:var(--dnipro-ink);border-color:color-mix(in srgb,var(--dnipro) 45%,transparent)}
+.bin.zahid{background:var(--zahid-bg);color:var(--zahid-ink);border-color:color-mix(in srgb,var(--zahid) 45%,transparent)}
+.bin.spilne{background:var(--spilne-bg);color:var(--spilne-ink);border-color:color-mix(in srgb,var(--spilne) 45%,transparent)}
+.bin:hover,.bin.over{transform:translateY(-3px)}
+.bin.dnipro:hover,.bin.dnipro.over{border-color:var(--dnipro)}
+.bin.zahid:hover,.bin.zahid.over{border-color:var(--zahid)}
+.bin.spilne:hover,.bin.spilne.over{border-color:var(--spilne)}
+.bin.flash-ok{box-shadow:0 0 0 5px var(--ok)}
+.bin.flash-right{box-shadow:0 0 0 5px var(--ok);animation:pulse .6s 2}
+.bin:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.bin:disabled{cursor:default}
+@keyframes pulse{50%{transform:scale(1.04)}}
+@media (max-width:560px){.bins{gap:8px}.bin{padding:12px 6px;min-height:92px}.bin .key{display:none}}
+
+/* Results */
+.results{align-items:center;text-align:center;gap:16px;padding-top:12px}
+.stars{font-size:3rem;letter-spacing:6px;line-height:1}
+.stars .off{opacity:.2;filter:grayscale(1)}
+.big{font-family:"Literata",Georgia,serif;font-weight:800;font-size:clamp(2.6rem,8vw,4rem);line-height:1}
+.verdict{font-size:1.15rem;font-weight:600}
+.meta{color:var(--muted);display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.mistakes{width:100%;max-width:720px;text-align:left;margin-top:8px}
+.mistakes h2{font-size:1.05rem;margin:0 0 10px}
+.mistakes ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.mistakes li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.mistakes li .ans{font-size:.88rem;margin-top:4px;color:var(--muted)}
+.mistakes li .ans b.r{color:var(--ok)} .mistakes li .ans s{color:var(--bad)}
+.res-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px}
+
+/* Review all */
+.answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;text-align:left}
+@media (max-width:700px){.answers{grid-template-columns:1fr}}
+.answers section{border-radius:16px;padding:14px}
+.answers h3{font-family:"Literata",Georgia,serif;margin:0 0 8px;font-size:1.1rem}
+.answers ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:.95rem}
+.answers .dnipro{background:var(--dnipro-bg);color:var(--dnipro-ink)}
+.answers .zahid{background:var(--zahid-bg);color:var(--zahid-ink)}
+.answers .spilne{background:var(--spilne-bg);color:var(--spilne-ink)}
+
+/* Sort mode */
+.spool{background:var(--surface);border:2px dashed var(--line);border-radius:18px;padding:14px;margin-bottom:14px;min-height:84px;transition:border-color .12s}
+.spool .hint{color:var(--muted);font-size:.92rem;padding:4px}
+.scards{display:flex;flex-wrap:wrap;gap:8px}
+.sgroups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:700px){.sgroups{grid-template-columns:1fr}}
+.shint{color:var(--muted);font-size:.92rem;margin:0 0 10px}
+.szone{border-radius:18px;padding:12px;min-height:170px;border:3px solid transparent;cursor:pointer;display:flex;flex-direction:column;transition:border-color .12s}
+.szone h2{font-family:"Literata",Georgia,serif;font-weight:800;font-size:1.12rem;margin:2px 4px 10px;display:flex;justify-content:space-between;gap:8px}
+.szone h2 small{font-family:"Golos Text",sans-serif;font-weight:600;font-size:.85rem;opacity:.8;font-variant-numeric:tabular-nums}
+.szone .scards{flex-direction:column;flex:1}
+.szone .sc{width:100%}
+.szone.dnipro{background:var(--dnipro-bg);color:var(--dnipro-ink);border-color:color-mix(in srgb,var(--dnipro) 35%,transparent)}
+.szone.zahid{background:var(--zahid-bg);color:var(--zahid-ink);border-color:color-mix(in srgb,var(--zahid) 35%,transparent)}
+.szone.spilne{background:var(--spilne-bg);color:var(--spilne-ink);border-color:color-mix(in srgb,var(--spilne) 35%,transparent)}
+.zone.target{border-style:dashed}
+.szone.dnipro.target{border-color:var(--dnipro)}.szone.zahid.target{border-color:var(--zahid)}.szone.spilne.target{border-color:var(--spilne)}
+.zone.over{border-color:var(--accent)!important;border-style:dashed}
+.sc{font:inherit;font-size:.93rem;line-height:1.35;text-align:left;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:8px 12px;cursor:grab;touch-action:none;user-select:none;position:relative;box-shadow:0 2px 6px -3px rgba(20,40,70,.3)}
+@media (pointer:coarse){.sc{touch-action:auto}}
+.sc:hover{border-color:var(--muted)}
+.sc.selected{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.sc.dragging{z-index:20;cursor:grabbing;box-shadow:0 14px 30px -8px rgba(20,40,70,.5)}
+.sc.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface));cursor:default}
+.sc.ok::before{content:"✓ ";color:var(--ok);font-weight:700}
+.sc.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.sc.bad::before{content:"✗ ";color:var(--bad);font-weight:700}
+.sc:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sort-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+@media (hover:none){.btn:hover,.bin:hover{transform:none}.sc:hover{border-color:var(--line)}.sc.selected:hover{border-color:var(--accent)}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="app">
+
+  <!-- START -->
+  <div class="screen start active" id="sStart">
+    <h1>Економіка і населення українських земель</h1>
+    <div class="era">друга половина ХІХ століття</div>
+    <div class="legend">
+      <span class="chip dnipro">Наддніпрянщина</span>
+      <span class="chip zahid">Західноукраїнські землі</span>
+      <span class="chip spilne">Спільне</span>
+    </div>
+    <p>Розподіліть 26 тверджень між трьома групами. Оберіть режим гри.</p>
+    <div class="modes">
+      <button class="btn" data-start="sort">Сортування<small>усі картки одразу</small></button>
+      <button class="btn ghost" data-start="all">По одному<small>з миттєвою перевіркою</small></button>
+      <button class="btn ghost" id="btnShowAll">Переглянути відповіді</button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div class="screen" id="sGame">
+    <div class="topbar">
+      <button class="icon-btn" id="btnHome" aria-label="На початок" title="На початок">✕</button>
+      <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+      <span class="stat"><span class="lbl">⏱</span><span id="timer">0:00</span></span>
+      <span class="stat"><span class="lbl">✓</span><span id="score">0</span></span>
+      <span class="stat streak" id="streak" title="Серія правильних відповідей"></span>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="bins" id="bins"></div>
+  </div>
+
+  <!-- SORT -->
+  <div class="screen" id="sSort">
+    <div class="topbar">
+      <button class="icon-btn" id="btnHome2" aria-label="На початок" title="На початок">✕</button>
+      <div class="progress" aria-hidden="true"><div id="sBar"></div></div>
+      <span class="stat"><span class="lbl">⏱</span><span id="sTimer">0:00</span></span>
+      <span class="stat"><span class="lbl">спроба</span><span id="sAttempts">1</span></span>
+    </div>
+    <p class="shint">Перетягніть картку в потрібну групу або торкніться картки, а потім групи.</p>
+    <div class="spool zone" data-zone="" id="spool"><div class="scards" id="spoolCards"></div></div>
+    <div class="sgroups" id="sgroups"></div>
+    <div class="feedback" id="sFeedback" aria-live="polite" style="margin-top:14px"></div>
+    <div class="sort-actions" id="sActions">
+      <button class="btn" id="btnCheck">Перевірити</button>
+    </div>
+    <div class="sort-actions" id="sEnd" style="display:none">
+      <button class="btn" data-start="sort">Грати знову</button>
+      <button class="btn ghost" id="btnBack2">На початок</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen results" id="sResults">
+    <div class="stars" id="stars"></div>
+    <div class="big" id="bigScore"></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="meta" id="meta"></div>
+    <div class="res-actions">
+      <button class="btn" data-start="all">Грати знову</button>
+      <button class="btn ghost" id="btnRetry">Повторити помилки</button>
+      <button class="btn ghost" id="btnShowAll2">Усі відповіді</button>
+    </div>
+    <div class="mistakes" id="mistakes"></div>
+  </div>
+
+  <!-- ANSWERS -->
+  <div class="screen results" id="sAnswers">
+    <h1 style="font-size:clamp(1.5rem,4vw,2.2rem)">Правильний розподіл</h1>
+    <div class="answers" id="answersList"></div>
+    <div class="res-actions">
+      <button class="btn" data-start="all">Грати</button>
+      <button class="btn ghost" id="btnBack">На початок</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  {id:"dnipro", name:"Наддніпрянщина", items:[
+    "Розвиток машинобудівної, видобувної, металообробної галузей",
+    "Розвиток вугільної, металургійної галузей",
+    "Розвиток цукрової промисловості",
+    "Висока концентрація виробництва і утворення монополій",
+    "Утворення промислових районів (Донецький, Криворізький, Нікопольський та ін.)",
+    "1865 р. залізниця: Балта — Одеса",
+    "Стрімкий розвиток торгівлі, перевезення пшениці, цукру до найбільших портів",
+    "1861 р. скасовано кріпацтво",
+    "Міграції в глиб імперії, на схід",
+    "Тимчасово зобов’язаний"
+  ]},
+  {id:"zahid", name:"Західноукраїнські землі", items:[
+    "Збільшилася кількість промислових підприємств, але 95% з них були дрібними",
+    "Промисловий переворот відбувався повільно",
+    "Основними галузями були лісопильна і нафтова",
+    "Несприятлива політика австрійського уряду",
+    "Низька концентрація виробництва",
+    "1861 р. залізниця: Перемишль — Львів",
+    "Занепадають традиційні галузі",
+    "Конкуренція з боку західних регіонів імперії",
+    "Міграції за кордон",
+    "Основними галузями були озокеритова і солева",
+    "Стрімкий розвиток кооперативів"
+  ]},
+  {id:"spilne", name:"Спільне", items:[
+    "Завершення промислового перевороту",
+    "Території розглядаються як джерело сировини і ринок збуту товарів",
+    "Поміщицьке землеволодіння",
+    "Селянське малоземелля",
+    "Іноземний капітал у добувній промисловості"
+  ]}
+];
+const ALL = [];
+GROUPS.forEach(g=>g.items.forEach(t=>ALL.push({text:t, answer:g.id})));
+const NAME = Object.fromEntries(GROUPS.map(g=>[g.id,g.name]));
+
+const $ = id=>document.getElementById(id);
+let deck=[], idx=0, score=0, streak=0, best=0, wrong=[], counts={}, t0=0, timerId=null, locked=false, lastWrong=[];
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));window.scrollTo(0,0)}
+function fmt(ms){const s=Math.floor(ms/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+
+function buildBins(){
+  const b=$("bins"); b.innerHTML="";
+  GROUPS.forEach((g,i)=>{
+    const el=document.createElement("button");
+    el.className="bin "+g.id; el.dataset.group=g.id; el.type="button";
+    el.innerHTML=`<span class="name">${g.name}</span><span class="count" id="c-${g.id}">0</span><span class="key">клавіша ${i+1}</span>`;
+    el.onclick=()=>answer(g.id);
+    b.appendChild(el);
+  });
+}
+
+function start(items){
+  deck=shuffle(items); idx=0; score=0; streak=0; best=0; wrong=[]; counts={dnipro:0,zahid:0,spilne:0};
+  buildBins(); show("sGame");
+  $("score").textContent="0"; $("streak").textContent="";
+  clearInterval(timerId); t0=Date.now(); $("timer").textContent="0:00";
+  timerId=setInterval(()=>$("timer").textContent=fmt(Date.now()-t0),500);
+  next();
+}
+
+function next(){
+  locked=false;
+  $("feedback").textContent=""; $("feedback").className="feedback";
+  document.querySelectorAll(".bin").forEach(b=>{b.classList.remove("flash-ok","flash-right");b.disabled=false});
+  $("bar").style.width=(idx/deck.length*100)+"%";
+  if(idx>=deck.length){finish();return}
+  const st=$("stage"); st.innerHTML="";
+  const c=document.createElement("div");
+  c.className="card enter"; c.id="card";
+  c.innerHTML=`<span class="num">${idx+1} / ${deck.length}</span>${deck[idx].text}`;
+  st.appendChild(c);
+  enableDrag(c);
+}
+
+function answer(gid){
+  if(locked||idx>=deck.length) return;
+  locked=true;
+  const item=deck[idx], card=$("card"), fb=$("feedback");
+  document.querySelectorAll(".bin").forEach(b=>b.disabled=true);
+  counts[gid]++; 
+  if(gid===item.answer){
+    score++; streak++; best=Math.max(best,streak);
+    card.classList.add("ok"); fb.className="feedback ok";
+    fb.textContent=streak>=3?`Правильно! Серія: ${streak} 🔥`:"Правильно!";
+    document.querySelector(`.bin.${gid}`).classList.add("flash-ok");
+    $("c-"+gid).textContent=counts[gid];
+    setTimeout(()=>{idx++;next()},650);
+  } else {
+    counts[gid]--; counts[item.answer]++;
+    streak=0; wrong.push({...item, chosen:gid});
+    card.classList.add("bad"); fb.className="feedback bad";
+    fb.textContent=`Ні, це — «${NAME[item.answer]}»`;
+    document.querySelector(`.bin.${item.answer}`).classList.add("flash-right");
+    $("c-"+item.answer).textContent=counts[item.answer];
+    setTimeout(()=>{idx++;next()},1700);
+  }
+  $("score").textContent=score;
+  $("streak").textContent=streak>=2?"🔥"+streak:"";
+}
+
+function enableDrag(card){
+  let sx=0, sy=0, dragging=false, moved=false, overBin=null;
+  card.addEventListener("pointerdown",e=>{
+    if(locked) return;
+    sx=e.clientX; sy=e.clientY; dragging=true; moved=false;
+    card.setPointerCapture(e.pointerId);
+  });
+  card.addEventListener("pointermove",e=>{
+    if(!dragging) return;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    if(!moved && Math.hypot(dx,dy)<6) return;
+    moved=true; card.classList.add("dragging"); card.classList.remove("enter");
+    card.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/30}deg) scale(.92)`;
+    card.style.pointerEvents="none";
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    card.style.pointerEvents="";
+    const bin=el&&el.closest(".bin");
+    if(bin!==overBin){overBin&&overBin.classList.remove("over");overBin=bin;bin&&bin.classList.add("over")}
+  });
+  const end=()=>{
+    if(!dragging) return; dragging=false;
+    card.classList.remove("dragging");
+    if(overBin){overBin.classList.remove("over");card.style.transform="";answer(overBin.dataset.group);overBin=null}
+    else {card.style.transition="transform .2s";card.style.transform="";setTimeout(()=>card.style.transition="",220)}
+  };
+  card.addEventListener("pointerup",end);
+  card.addEventListener("pointercancel",end);
+}
+
+function finish(){
+  clearInterval(timerId);
+  const total=deck.length, pct=score/total, time=fmt(Date.now()-t0);
+  $("bar").style.width="100%";
+  const n=pct===1?3:pct>=.8?2:pct>=.5?1:0;
+  $("stars").innerHTML=[0,1,2].map(i=>`<span class="${i<n?"":"off"}">⭐</span>`).join("");
+  $("bigScore").textContent=`${score} / ${total}`;
+  $("verdict").textContent=pct===1?"Бездоганно! Усі твердження на своїх місцях.":pct>=.8?"Дуже добре! Лишилося кілька помилок.":pct>=.5?"Непогано, але варто повторити.":"Спробуйте ще раз — перегляньте помилки нижче.";
+  $("meta").innerHTML=`<span>⏱ ${time}</span><span>🔥 найдовша серія: ${best}</span>`;
+  lastWrong=wrong.map(w=>({text:w.text,answer:w.answer}));
+  $("btnRetry").style.display=wrong.length?"":"none";
+  $("mistakes").innerHTML=wrong.length?`<h2>Помилки (${wrong.length})</h2><ul>${wrong.map(w=>`<li>${w.text}<div class="ans">Ваша відповідь: <s>${NAME[w.chosen]}</s> · правильно: <b class="r">${NAME[w.answer]}</b></div></li>`).join("")}</ul>`:"";
+  show("sResults");
+  if(pct>=.8) confetti();
+}
+
+function showAnswers(){
+  $("answersList").innerHTML=GROUPS.map(g=>`<section class="${g.id}"><h3>${g.name}</h3><ul>${g.items.map(t=>`<li>${t}</li>`).join("")}</ul></section>`).join("");
+  show("sAnswers");
+}
+
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv=$("confetti"), ctx=cv.getContext("2d");
+  cv.width=innerWidth; cv.height=innerHeight;
+  const cols=["#f0b54a","#2b7a4f","#4459a0","#d23b2c","#1d5fd1"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*5,a:Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let f=0;
+  (function tick(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=.1;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);ctx.restore()});
+    if(++f<220) requestAnimationFrame(tick); else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* ---------- Sort mode ---------- */
+let sCards=[], sSel=null, sT0=0, sTimerId=null, sAttempts=0, sDone=false, sBusy=false;
+
+function startSort(){
+  clearInterval(timerId);
+  sCards=shuffle(ALL).map((c,i)=>({...c,id:i,place:null,state:""}));
+  sSel=null; sAttempts=1; sDone=false; sBusy=false;
+  $("sAttempts").textContent="1";
+  $("sFeedback").textContent=""; $("sFeedback").className="feedback";
+  $("sActions").style.display=""; $("sEnd").style.display="none";
+  const box=$("sgroups"); box.innerHTML="";
+  GROUPS.forEach(g=>{
+    const z=document.createElement("div");
+    z.className="szone zone "+g.id; z.dataset.zone=g.id;
+    z.innerHTML=`<h2><span>${g.name}</span><small id="sc-${g.id}">0</small></h2><div class="scards" id="sz-${g.id}"></div>`;
+    box.appendChild(z);
+  });
+  document.querySelectorAll("#sSort .zone").forEach(z=>z.onclick=e=>{
+    if(e.target.closest(".sc")) return;
+    if(sSel!==null) placeCard(sSel, z.dataset.zone||null);
+  });
+  clearInterval(sTimerId); sT0=Date.now(); $("sTimer").textContent="0:00";
+  sTimerId=setInterval(()=>$("sTimer").textContent=fmt(Date.now()-sT0),500);
+  show("sSort"); renderSort();
+}
+
+function placeCard(id,z){
+  if(sDone||sBusy) return;
+  const c=sCards.find(c=>c.id===id); if(!c||c.state==="ok") return;
+  c.place=z; c.state=""; sSel=null; renderSort();
+}
+
+function renderSort(){
+  const pool=$("spoolCards"); pool.innerHTML="";
+  GROUPS.forEach(g=>$("sz-"+g.id).innerHTML="");
+  sCards.forEach(c=>{
+    const b=document.createElement("button"); b.type="button";
+    b.className="sc"+(c.state?" "+c.state:"")+(sSel===c.id?" selected":"");
+    b.textContent=c.text;
+    chipDrag(b,c);
+    (c.place?$("sz-"+c.place):pool).appendChild(b);
+  });
+  const left=sCards.filter(c=>!c.place).length;
+  if(!left) pool.innerHTML=`<div class="hint">${sDone?"Усі картки на своїх місцях!":"Усі картки розподілено — натисніть «Перевірити»."}</div>`;
+  else if(left===sCards.length) pool.insertAdjacentHTML("afterbegin","");
+  GROUPS.forEach(g=>$("sc-"+g.id).textContent=sCards.filter(c=>c.place===g.id).length);
+  document.querySelectorAll("#sSort .szone").forEach(z=>z.classList.toggle("target",sSel!==null));
+  $("sBar").style.width=((sCards.length-left)/sCards.length*100)+"%";
+  const btn=$("btnCheck");
+  btn.disabled=left>0||sBusy||sDone;
+  btn.textContent=left>0?`Перевірити (залишилось ${left})`:"Перевірити";
+}
+
+function chipDrag(el,card){
+  let sx=0,sy=0,drag=false,moved=false,over=null;
+  el.addEventListener("pointerdown",e=>{
+    if(card.state==="ok"||sDone||sBusy) return;
+    sx=e.clientX; sy=e.clientY; drag=true; moved=false;
+    if(e.pointerType==="mouse"||e.pointerType==="pen") el.setPointerCapture(e.pointerId);
+  });
+  el.addEventListener("pointermove",e=>{
+    if(!drag) return;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    if(!moved&&Math.hypot(dx,dy)<6) return;
+    moved=true; el.classList.add("dragging");
+    el.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/40}deg)`;
+    el.style.pointerEvents="none";
+    const t=document.elementFromPoint(e.clientX,e.clientY);
+    el.style.pointerEvents="";
+    const z=t&&t.closest("#sSort .zone");
+    if(z!==over){over&&over.classList.remove("over");over=z;z&&z.classList.add("over")}
+  });
+  el.addEventListener("pointerup",()=>{
+    if(!drag) return; drag=false;
+    el.classList.remove("dragging"); el.style.transform="";
+    if(moved&&over){over.classList.remove("over");const z=over.dataset.zone||null;over=null;placeCard(card.id,z)}
+    else if(!moved){sSel=sSel===card.id?null:card.id;renderSort()}
+    else if(over){over.classList.remove("over");over=null}
+  });
+  el.addEventListener("pointercancel",()=>{
+    drag=false; el.classList.remove("dragging"); el.style.transform="";
+    if(over){over.classList.remove("over");over=null}
+  });
+}
+
+$("btnCheck").onclick=()=>{
+  if(sDone||sBusy) return;
+  let right=0;
+  sCards.forEach(c=>{ if(c.place===c.answer){c.state="ok";right++} else c.state="bad" });
+  sSel=null;
+  const fb=$("sFeedback");
+  if(right===sCards.length){
+    sDone=true; clearInterval(sTimerId);
+    fb.className="feedback ok";
+    fb.textContent=sAttempts===1?`Бездоганно! Усе правильно з першої спроби за ${fmt(Date.now()-sT0)} ⭐⭐⭐`:`Готово! Усе правильно за ${fmt(Date.now()-sT0)}, спроб: ${sAttempts}.`;
+    $("sActions").style.display="none"; $("sEnd").style.display="";
+    renderSort(); confetti();
+  } else {
+    sBusy=true;
+    fb.className="feedback bad";
+    fb.textContent=`Правильно ${right} з ${sCards.length}. Червоні картки повертаються назад — спробуйте ще раз.`;
+    renderSort();
+    setTimeout(()=>{
+      sCards.forEach(c=>{ if(c.state==="bad") c.place=null });
+      sAttempts++; $("sAttempts").textContent=sAttempts;
+      sBusy=false; renderSort();
+    },1600);
+  }
+};
+$("btnHome2").onclick=()=>{clearInterval(sTimerId);show("sStart")};
+$("btnBack2").onclick=()=>show("sStart");
+
+document.querySelectorAll("[data-start]").forEach(b=>b.onclick=()=>b.dataset.start==="sort"?startSort():(clearInterval(sTimerId),start(ALL)));
+$("btnRetry").onclick=()=>start(lastWrong);
+$("btnShowAll").onclick=showAnswers;
+$("btnShowAll2").onclick=showAnswers;
+$("btnBack").onclick=()=>show("sStart");
+$("btnHome").onclick=()=>{clearInterval(timerId);show("sStart")};
+document.addEventListener("keydown",e=>{
+  if(!$("sGame").classList.contains("active")) return;
+  const i=["1","2","3"].indexOf(e.key);
+  if(i>=0) answer(GROUPS[i].id);
+});
+</script>
+</body>
+</html>
